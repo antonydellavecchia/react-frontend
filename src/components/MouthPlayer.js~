@@ -1,0 +1,133 @@
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import imageMapResize from 'image-map-resizer';
+import Spritesheet from 'react-responsive-spritesheet';
+
+export class MouthPlayer extends Component {
+  constructor () {
+    super();
+    this.state = {
+      mouthImage:'assets/images/mouth1.png',
+      animated: false
+    };
+  }
+
+  clicked(area) {
+    this.setState({
+      animated: true
+    });
+  }
+  
+  hover(area) {
+    if (area == 'play') {
+      this.setState({
+        mouthImage: 'assets/images/mouth16.png'
+      });
+    }
+
+    if (area == 'next') {
+      this.setState({
+        mouthImage: 'assets/images/mouth17.png'
+      });
+    }
+
+    if (area == 'previous') {
+      this.setState({
+        mouthImage: 'assets/images/mouth19.png'
+      });
+    }
+  }
+
+  hoverOff() {
+    this.setState({
+      mouthImage: 'assets/images/mouth1.png'
+    });    
+  }
+
+  mouth() {
+    if (this.state.animated) {
+      return this.mouthAnimation();
+    }
+  }
+  //returns a sprite
+  mouthAnimation() {
+    return (
+      <div className="mouth-background">
+        <img className="mouth" src={ this.state.mouthImage } />
+        <Spritesheet
+          style={{
+            position: 'absolute',
+            zIndex: '1',
+            width: '100%'
+          }}
+          image={`assets/images/mouth-spritesheet.png`}
+          widthFrame={640}
+          heightFrame={826}
+          steps={15}
+          fps={20}
+          direction={`forward`}
+          autoplay={true}
+          loop={false}
+          startAt={1}
+          endAt={15}
+          onLoopComplete={()=> {
+            this.setState({
+              animated: false
+            });
+          }}
+        />
+      </div>
+    );
+  }
+
+  animationComplete () {
+    alert('hello');
+    this.setState({
+      animated: false,
+      mouthImage: 'assets/images/mouth14.png'
+    });
+  }
+
+  // returns controls when mouth isnt being animated
+  mouthController() {
+    return(
+      <div className="mouth-background">
+        <img className="mouth" src={ this.state.mouthImage } useMap="#controls"/>
+        <map name="controls">
+	  <area shape="poly"
+	        coords="246,89,226,135,224,174,264,188,404,196,419,165,421,123,396,87,325,117,326,115,326,116,250,92,248,88,248,91"
+                onMouseEnter={ () => this.hover('play') }
+                onMouseLeave={ () => this.hoverOff() }
+                onClick={ () => this.clicked('play') }
+          />
+	  
+	  <area shape="poly"
+	        coords="241,86,220,136,225,174,186,185,139,166,145,125,170,93,181,92"
+                onMouseEnter={ () => this.hover('previous') }
+                onMouseLeave={ () => this.hoverOff() }
+
+          />
+          
+	  <area shape="poly"
+	        coords="400,87,409,82,479,103,499,145,493,188,435,198,426,193,429,148,420,120"
+                onMouseEnter={ () => this.hover('next') }
+                onMouseLeave={ () => this.hoverOff() }
+          />
+        </map>
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    imageMapResize();
+  }
+  render() {
+    return (
+      <div className="mouth-player">
+	{ this.mouthController() }
+        { this.mouth() }
+        
+      </div>
+    );
+  }
+}

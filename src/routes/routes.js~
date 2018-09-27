@@ -1,0 +1,69 @@
+import React from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom';
+import { NavItem } from 'react-bootstrap';
+import { history } from '../helpers';
+
+const fakeAuth = {
+  isAuthenticated: false,
+  authenticate(cb) {
+    this.isAuthenticated = true;
+    setTimeout(cb, 100);
+  },
+  signout(cb) {
+    this.isAuthenticated = false;
+    setTimeout(cb, 100);
+  }
+}
+
+const Discover = () => <h3>Public</h3>;
+const Protected = () => <h3>Protected</h3>;
+
+class Login extends React.Component {
+  render() {
+    return (
+      <div>
+        Login
+      </div>
+    )
+  }
+}
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    fakeAuth.isAuthenticated === true
+    ? <Component {...props} />
+    : <Redirect to='/login' />
+  )} />
+)
+
+export function GetRoutes() {
+  return (
+    <Router history={history}>
+      <div>
+        <Route path="/" component={Discover}/>
+        <Route path="/login" component={Login}/>
+        <PrivateRoute path='/protected' component={Protected} />
+      </div>
+    </Router>
+  );
+}
+
+navbarLinks() {
+  if (this.fakeAuth.isAuthenticated) {
+    return [
+      <NavItem key="secret">Secret</NavItem>,
+      <NavItem key="signout">Sign out</NavItem>
+    ];
+  }
+  return [
+    <NavItem key="discover"><Link to="/"> Discover</Link></NavItem>,
+    <NavItem key="signup"><Link to="/login"> Login</Link></NavItem>
+  ];
+}
+
