@@ -1,0 +1,43 @@
+import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+export class ContentListContainer extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      divs: props.divs
+    };
+  }
+  
+  render() {
+    return (
+      <div className="container">
+	<div className="animation-container">
+	  <ReactCSSTransitionGroup transitionName="example">
+	    {this.renderItems()}
+	  </ReactCSSTransitionGroup>
+	</div>
+      </div>
+    );
+  },
+  
+  renderItems() {
+    return this.state.items.map((item, i) => {
+      return (
+	<div key={item} onClick={() => this.removeItem(i)} className="item">
+	  {item}
+	</div>
+      );	
+    });	
+  },
+  
+  removeItem(i) {
+    let newItems = this.state.items.slice();
+    newItems.splice(i, 1);
+    this.setState({
+      items: newItems
+    });
+  }
+  
+}

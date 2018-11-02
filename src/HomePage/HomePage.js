@@ -12,8 +12,24 @@ class HomePage extends React.Component {
   render() {
     const { user, users } = this.props;
     return (
-      <div>
-        hello
+      <div className="track-display">
+        <div className="stove-background">
+          <img src="assets/images/stove.png"/>
+        </div>
+
+        <div className="cover">
+          <img src="assets/images/jonny.jpg"/>
+        </div>
+
+        <div className="track-info">
+          <div className="track-title">
+            <h5>Happy Birthday</h5>
+          </div>
+
+          <div className="track-artist">
+            hope it's a good one
+          </div>
+        </div>
       </div>
     );
   }

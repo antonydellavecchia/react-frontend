@@ -1,11 +1,14 @@
 //import config from 'config';
 import { authHeader } from '../helpers';
 
-const apiUrl = 'https://api.thespacekitchen.co.uk';
+const apiUrl = process.env.NODE_ENV === 'production' ? 
+               process.env.REACT_APP_API_URL : process.env.REACT_APP_DEV_API_URL;
 
 export const userService = {
   login,
-  logout
+  logout,
+  authGet,
+  authPost
 };
 
 function login(username, password) {
@@ -31,6 +34,25 @@ function login(username, password) {
 function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem('user');
+}
+
+function authPost(data, endpoint) {
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    body: data
+  };
+
+  return fetch(`${apiUrl}${endpoint}`, requestOptions).then(handleResponse);
+}
+
+function authGet(endpoint) {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  };
+
+  return fetch(`${apiUrl}${endpoint}`, requestOptions).then(handleResponse);
 }
 
 

@@ -1,0 +1,246 @@
+import React from 'react';
+import { Cropper } from 'react-image-cropper';
+import { Grid, Row, Col} from 'react-bootstrap';
+
+import { userService } from '../services';
+
+export class ReleaseUpload extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uploadStatus: false,
+      tracks: [],
+      imagePreview: null,
+      uploadTracks: [],
+      cover: null
+    }
+    
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+    this.previewImage = this.previewImage.bind(this);
+    this.cropImage = this.cropImage.bind(this);
+  }
+
+
+  handleUpload(e) {
+    e.preventDefault();
+
+    console.log(this.state.uploadTracks);
+    const data = new FormData();
+
+    // add release info to form
+    data.append('title', this.state.title);
+    data.append('artist', this.state.artist);
+    data.append('cover', this.state.cover);
+      
+    
+    this.state.uploadTracks.forEach((trackInput, trackIndex) => {
+      console.log(trackInput);
+      data.append(`tracks[${trackIndex}]`, trackInput.title.value);
+      data.append(`track_${trackIndex}`, trackInput.file.files[0]);
+    });
+
+    userService.authPost(data, 'releases');
+  }
+
+  addTrack(e) {
+    e.preventDefault();
+
+    let trackIndex = this.state.tracks.length;
+
+    // initate new track upload input
+    this.setState({
+      uploadTracks: [...this.state.uploadTracks, {}]
+    });
+    
+    let trackInput = (
+      <div className="form-group general-text">
+        <input className="form-control general-text"
+               ref={(ref) => {
+                   let uploadTracks = [...this.state.uploadTracks];
+
+                   uploadTracks[trackIndex].title = ref;
+                   
+                   this.setState({uploadTracks: uploadTracks});
+               }}
+               name="tracks[]"
+               type="text"
+               placeholder="Track Title" />
+        <input className="form-control general-text"
+               ref={ref => {
+                   let uploadTracks = [...this.state.uploadTracks];
+
+                   uploadTracks[trackIndex].file = ref;
+                   
+                   this.setState({uploadTracks: uploadTracks});
+               }}
+               name="track_{trackIndex}"
+               type="file" />
+        <label for="file"><strong>Choose a file</strong></label>
+      </div>
+    );
+
+    this.setState({
+      tracks: [...this.state.tracks, trackInput]
+    });
+    
+  }
+
+  removeTrack(e) {
+    e.preventDefault();
+
+    // create cop
+    let tracks = [...this.state.tracks];
+
+    // find element to remove
+    let index = parseInt(e.target.parentNode.getAttribute('data-key'));
+
+    // remove
+    tracks.splice(index, 1);
+
+    // update
+    this.setState({tracks: tracks});
+  }
+
+  previewImage(value) {
+    let input = value.target;
+
+    // load image input
+    if (input.files && input.files[0]) {
+
+      let reader = new FileReader();
+
+      reader.onload = (e) => {
+        // load image src into cropper
+        let previewCropper = (
+          <Cropper
+            src={ e.target.result }
+            ref={ref => { this.cropper = ref }} />
+        );
+
+        // imagePreview div
+        let imagePreview = (
+          <div className="img-preview">
+            { previewCropper }
+          </div>
+        );
+
+        this.setState({imagePreview: imagePreview});
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+
+  }
+
+  cropImage(e) {
+    // stop from submitting form
+    e.preventDefault();
+    
+    if (!this.state.imagePreview) {
+      return;
+    }
+
+    let cover =  (
+      <div className="stove-display">
+        <div className="stove-background">
+          <img src="assets/images/stove.png"/>
+        </div>
+
+	<div className="cover">
+          <img src={this.cropper.crop()}/>
+        </div>
+      </div>
+    );
+
+    this.setState({cover: cover});
+  }
+
+
+  
+  render() {
+    return(
+      <div className="release-form">
+        <form onSubmit={this.handleUpload} >
+          <Grid fluid>
+            <Row className="general-text">
+              <label className="control-label">Artist</label>
+              <input className="form-control general-text"
+                     name="artist"
+                     type="text"
+                     placeholder="" />
+            </Row>
+            
+            <Row className="general-text">
+              
+              <label className="control-label">Release Title</label>
+              <input className="form-control general-text"
+                     name="title"
+                     type="text"
+                     placeholder="" />
+              <label className="control-label">Release Cover</label>
+            </Row>
+
+            <Row className="general-text">
+	      <input multiple="true"
+		     accept="image/png,image/jpeg"
+		     type="file"
+		     className="form-control"
+		     onChange={this.previewImage}/>
+
+              { !this.state.cover ? this.state.previewImage : this.state.cover }
+              
+              <button onClick={this.cropImage} style={{ float: 'right' }}>
+                Crop Image
+              </button>
+            </Row>
+
+            <Row>
+              <div>
+                {
+                  this.state.tracks.map((input, index) => {
+                    return (
+                      <div data-key={index}>
+                        <div className="track-input">
+                          <div className="track-number">
+                            {index + 1}
+                          </div>
+                          
+                          <div className="inputs">
+                            {input}
+                          </div>
+                          
+                          <div className="stove-button">
+                            <div onClick={ this.removeTrack} className="stove-display">
+                              <div clasName="stove-background">
+                                <img height="40px" src="assets/images/stove.png"/>
+                              </div>
+                              
+                              <div className="stove-button-text">
+                                X
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    );
+                  })
+                }
+              </div>
+
+              <div>
+                <button className="btn btn-success" onClick={ this.addTrack }>Add Track</button>
+              </div>
+            </Row>
+          </Grid>
+
+          <button> Submit</button>
+        </form>
+
+      </div>
+    )
+  }
+}
+

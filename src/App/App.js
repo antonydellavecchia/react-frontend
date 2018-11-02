@@ -1,15 +1,23 @@
 import React from 'react';
-import { Router, Route, Link} from 'react-router-dom';
+import { withRouter, Router, Route, Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 import {Grid, Row, Col, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { history } from '../helpers';
 import { alertActions } from '../actions';
-import { PrivateRoute, Navigation, SpaceBackground, MouthPlayer } from '../components';
+import { PrivateRoute, Navigation, SpaceBackground } from '../components';
+import AudioPlayer from '../components/AudioPlayer';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
-import { Login, Protected, Discover } from '../routes';
+import { Login,
+         Releases,
+         Discover,
+         Submit,
+         Artists,
+         Tracks,
+         TrackContent,
+         ArtistContent} from '../routes';
 
 
 
@@ -25,16 +33,20 @@ class App extends React.Component {
   }
 
   navbarLinks() {
-    if (this.props.authenticated) {
+    //alert(this.prop.authenticated);
+    
+    if (localStorage.getItem('user')) {
       return [
-        <LinkContainer  to="/"><NavItem key={1}> Discover</NavItem></LinkContainer>,
-        <LinkContainer to="/login"> <NavItem key={2} > Login</NavItem></LinkContainer>,
-        <LinkContainer to="/protected"> <NavItem key={3} >protected</NavItem></LinkContainer>
+        <li key="discover"> <Link  to="/discover">Discover</Link></li>,
+        <li key="releases"> <Link to="/releases">Releases</Link></li>,
+        <li key="artists"> <Link to="/artists">Artists</Link></li>,
+        <li key="tracks"> <Link to="/tracks">Tracks</Link></li>,
+        <li key="submit"> <Link to="/submit">Submit</Link></li>,
+        <li key="login"> <Link to="/login">Logout</Link></li>
       ];
     }
     return [
-      <LinkContainer to="/"><NavItem> Discover</NavItem></LinkContainer>,
-      <LinkContainer to="/login" ><NavItem> Login</NavItem></LinkContainer>
+      <li key="login"> <Link to="/login">Login</Link></li>
     ];
   }
 
@@ -48,19 +60,41 @@ class App extends React.Component {
             <Navigation>
               { this.navbarLinks() }
             </Navigation>
-            
+
+
             <Grid fluid>
               <Row>
-                <Col sm={4} xs={11} >
-                  <MouthPlayer />
+                <Col sm={3} xs={11} >
                 </Col>
-                <Col sm={4} xs={11}>
-                  <Route path="/login" component={LoginPage}/>
-                  <Route path='/' component={Discover}/>
-                  <PrivateRoute path='/protected' component={HomePage} />
+                <Col sm={6} xs={11} >
+                  <div className="middle">
+                    <Route path="/login" component={LoginPage}/>
+                    <PrivateRoute path='/discover' component={Discover} />
+
+                    <PrivateRoute exact path='/tracks' component={ Tracks }/>
+                    <Route path='/tracks/:id' component={ TrackContent }/>
+
+                    <PrivateRoute path='/releases' component={ Releases }/>
+
+                    <PrivateRoute exact path='/artists' component={ Artists }/>
+                    <Route path='/artists/:id' component={ ArtistContent}/>
+
+                    <PrivateRoute path='/submit' component={ Submit }/>
+                  </div>
+
                 </Col>
-                <Col sm={4}>
+                <Col sm={3}>
+                  
                 </Col>
+              </Row>
+            </Grid>
+
+            <Grid fluid>
+              <Row>
+                <Col sm={3} xs={11} className="left">
+                  <AudioPlayer />
+                </Col>
+
               </Row>
             </Grid>
           </div>

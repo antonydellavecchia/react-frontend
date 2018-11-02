@@ -2,26 +2,58 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import imageMapResize from 'image-map-resizer';
 import Spritesheet from 'react-responsive-spritesheet';
+import { connect } from 'react-redux';
+import ReactTimeout from 'react-timeout'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-export class MouthPlayer extends Component {
-  constructor () {
-    super();
+
+import { audioPlayerActions } from '../../actions/audioPlayer.actions';
+
+
+
+const apiUrl = process.env.NODE_ENV === 'production' ? 
+               process.env.REACT_APP_API_URL : process.env.REACT_APP_DEV_API_URL;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    playTrack: () => dispatch(audioPlayerActions.playTrack()),
+    pauseTrack: () => dispatch(audioPlayerActions.pauseTrack())
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    audioTrack: state.audioPlayer.audioTrack,
+    isPlaying: state.audioPlayer.isPlaying,
+    controllerView: state.audioPlayer.controllerView
+  };
+};
+
+
+class ConnectedMouthPlayer extends Component {
+  constructor (props) {
+    super(props);
     this.state = {
       mouthImage:'/assets/images/mouth1.png',
       animated: false,
-      playing: false
+      audioTrack: props.audioTrack,
+      controllerView: props.controllerView
     };
   }
 
   clicked(area) {
+    console.log(this.state.audioTrack, 'hello');
     this.setState({
       animated: true
     });
+
+    this.props.playTrack();
   }
   
   hover(area) {
     if (area == 'play') {
-      let frame = this.state.playing ? 15 : 16;
+      let frame = this.props.isPlaying ? 15 : 16;
 
       this.setState({
         mouthImage: `/assets/images/mouth${frame}.png`
@@ -29,7 +61,7 @@ export class MouthPlayer extends Component {
     }
 
     if (area == 'next') {
-      let frame = this.state.playing ? 18 : 17;
+      let frame = this.props.isPlaying ? 18 : 17;
 
       this.setState({
         mouthImage: `/assets/images/mouth${frame}.png`
@@ -37,7 +69,7 @@ export class MouthPlayer extends Component {
     }
 
     if (area == 'previous') {
-      let frame = this.state.playing ? 20 : 19;
+      let frame = this.props.isPlaying ? 20 : 19;
 
       this.setState({
         mouthImage: `/assets/images/mouth${frame}.png`
@@ -46,7 +78,7 @@ export class MouthPlayer extends Component {
   }
 
   hoverOff() {
-    let frame = this.state.playing ? 14 : 1;
+    let frame = this.props.isPlaying ? 14 : 1;
 
     this.setState({
       mouthImage: `/assets/images/mouth${frame}.png`
@@ -54,9 +86,12 @@ export class MouthPlayer extends Component {
   }
 
   mouth() {
-    if (this.state.animated) {
-      
+    if (!this.props.controllerView) {
+      console.log('hello');
+      return null;
+    }
 
+    if (this.state.animated) {
       return this.mouthAnimation();
     }
 
@@ -67,9 +102,9 @@ export class MouthPlayer extends Component {
   
   //returns a sprite
   mouthAnimation() {
-    let endFrame = this.state.playing ? 1 : 14;
-    let startFrame = this.state.playing ? 14 : 1;
-    let animationDirection = this.state.playing ? 'rewind' : 'forward';
+    let endFrame = this.props.isPlaying ? 1 : 14;
+    let startFrame = this.props.isPlaying ? 14 : 1;
+    let animationDirection = this.props.isPlaying ? 'rewind' : 'forward';
 
 
     return (
@@ -81,7 +116,7 @@ export class MouthPlayer extends Component {
             zIndex: '1',
             width: '100%'
           }}
-          image={`assets/images/mouth-spritesheet.png`}
+          image={`/assets/images/mouth-spritesheet.png`}
           widthFrame={640}
           heightFrame={826}
           steps={15}
@@ -100,7 +135,7 @@ export class MouthPlayer extends Component {
             }
           ]}
           onInit={() => {
-              if (this.state.playing) {
+              if (this.props.isPlaying) {
                 this.setState({
                   mouthImage: `assets/images/mouth1.png`
                 });
@@ -114,8 +149,8 @@ export class MouthPlayer extends Component {
   animationComplete (endFrame) {
     this.setState({
       animated: false,
-      mouthImage: `assets/images/mouth${endFrame}.png`,
-      playing: !this.state.playing
+      mouthImage: `/assets/images/mouth${endFrame}`,
+      isPlaying: !this.props.isPlaying
     });
     this.render();
     this.componentDidMount();
@@ -154,13 +189,24 @@ export class MouthPlayer extends Component {
   componentDidMount() {
     imageMapResize();
   }
-  
+
+  componentDidUpdate() {
+    
+    imageMapResize();
+    this.render();
+  }
+
   render() {
     return (
-      <div className="mouth-player">
-        { this.mouth() }
-        
+      <div className="animation-container">
+	<ReactCSSTransitionGroup transitionName="mouth"
+                                 transitionLeaveTimeout={700}
+                                 transitionEnterTimeout={700}>
+          { this.mouth() }
+	</ReactCSSTransitionGroup>
       </div>
     );
   }
 }
+const MouthPlayer = connect(mapStateToProps, mapDispatchToProps)(ConnectedMouthPlayer);
+export {MouthPlayer};

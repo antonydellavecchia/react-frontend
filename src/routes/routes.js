@@ -21,7 +21,6 @@ const fakeAuth = {
   }
 }
 
-export const Discover = () => <h3>Public</h3>;
 export const Protected = () => <h3>Protected</h3>;
 
 export class Login extends React.Component {
@@ -33,14 +32,6 @@ export class Login extends React.Component {
     )
   }
 }
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={(props) => (
-    fakeAuth.isAuthenticated === true
-    ? <Component {...props} />
-    : <Redirect to='/login' />
-  )} />
-)
 
 export function GetRoutes() {
   return (

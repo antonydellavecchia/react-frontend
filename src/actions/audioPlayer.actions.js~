@@ -1,0 +1,31 @@
+import { audioPlayerConstants } from '../constants';
+
+export const audioPlayerActions = {
+  setActiveTrack,
+  playTrack,
+  pauseTrack
+};
+
+// sets active track
+function setActiveTrack (activeTrack) {
+  return {
+    type: audioPlayerConstants.SET_ACTIVE_TRACK,
+    payload: activeTrack
+  };
+}
+
+// plays ative track
+function playTrack(){
+  return {
+    type: audioPlayerConstants.PLAY_TRACK,
+    payload: true
+  };
+}
+
+// pauses active track
+function pauseTrack(){
+  return {
+    type: audioPlayerConstants.PLAY_TRACK,
+    payload: false
+  };
+}

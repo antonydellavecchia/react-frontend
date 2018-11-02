@@ -1,0 +1,62 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import { userService } from '../services';
+
+const apiUrl = process.env.NODE_ENV === 'production' ?
+               process.env.REACT_APP_API_URL : process.env.REACT_APP_DEV_API_URL;
+
+
+class ArtistContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name:''
+    }
+
+  }
+
+  componentDidMount() {
+    let { match }  = this.props;
+
+    const requestOptions = {
+      method: 'GET'
+    };
+
+    console.log(match.url);
+    
+    userService.authGet(`${match.url}`).then(result => {
+      console.log(result);
+      this.setState({
+        name: result.name
+      })
+    });
+  }
+
+
+  render() {
+    return([
+      <div className="pan-background">
+	<img src="/assets/images/frying-pan.png"/>
+      </div>,
+      
+      <div className="artist-name">
+        { this.state.name }
+      </div>
+    ]);
+  }
+}
+
+function mapStateToProps(state) {
+  const { users, authentication } = state;
+  const { user } = authentication;
+  return {
+    user,
+    users
+  };
+}
+
+
+const connectedArtistContent = withRouter(connect(mapStateToProps)(ArtistContent));
+export { connectedArtistContent as ArtistContent};

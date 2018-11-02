@@ -1,0 +1,51 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import {Grid, Row, Col} from 'react-bootstrap';
+import { Router, Route, Link} from 'react-router-dom';
+
+import { history } from '../helpers;'
+import { userService } from '../services';
+import { userActions } from '../actions';
+import { ReleaseDisplay } from '../components';
+
+
+class Artists extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      artists: [],
+      content: 'artists'
+    };
+    
+    
+  }
+
+  componentDidMount() {
+    userService.authGet('artists').then(data => {
+      this.setState({artists: data.artists});
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <Router history={ history }>
+          { this.state.content }
+        </Router>
+      </div>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  const { users, authentication } = state;
+  const { user } = authentication;
+  return {
+    user,
+    users
+  };
+}
+
+const connectedArtists = connect(mapStateToProps)(Artists);
+export { connectedArtists as Releases };
