@@ -1,0 +1,657 @@
+@font-face {
+    font-family: AlphaFridgeMagnets;
+    src: url('AlphaFridgeMagnets.woff') format('woff');
+
+}
+body {
+    margin: 0;
+    padding:0;
+    
+}
+
+.header {
+    width: 100%;
+    padding: 0px;
+}
+
+.background-image {
+
+
+    background-image:  url('images/glasgow-squinty.png');
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;              /* optional, center the image */
+}
+
+.bottom {
+    vertical-align: bottom;
+}
+
+.game-footer {
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+}
+
+.general-text {
+    font-family: AlphaFridgeMagnets;
+    color: rgb(57,250,0);
+    background-color: transparent;
+}
+
+#navbar{
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    margin-top: 0px;
+    font-family: AlphaFridgeMagnets;
+    z-index: 1;
+}
+
+#navbar a{
+    float: left;
+    display: block;
+    color: rgb(57,250,0);
+    text-align: center;
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+#navbar a:hover {
+    background-color:  rgb(250, 6, 121);
+}
+
+/* track content */
+.track-content {
+    overflow: hidden;
+    
+}
+.track-content-cover {
+    width: 100%;
+    padding: 10px;
+    outline: 10px solid transparent;
+}
+
+.track-content-cover img {
+    max-width: 100%;
+}
+
+.track-content-title {
+    font-size: 3vw;
+}
+
+.track-content-artist {
+    font-size: 2vw;
+}
+
+.track-content-release {
+    font-size: 2vw;
+}
+
+/* ***** content list container    ******* */
+
+
+.content-list-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.animation-container {
+    display: flex;
+    overflow: hidden;
+}
+
+.item:hover {
+    cursor: pointer;
+    transform: translateY(+6px);
+    -webkit-filter: drop-shadow(5px 5px 5px rgb(253, 254,0));
+    filter: drop-shadow( 0 10px 15px rgb(253, 254,0));
+    overflow: hidden;
+}
+
+
+.item {
+    transform: translateY(-3px);
+    -webkit-filter: drop-shadow(5px 5px 5px rgb(250, 6, 121));
+    filter: drop-shadow( 0 10px 15px rgb(250, 6, 121));
+    padding: 10px;
+    overflow: hidden;
+}
+
+
+
+.active-item {
+   transform: translateY(+3px);
+   -webkit-filter: drop-shadow(5px 5px 5px rgb(57,250,0));
+   filter: drop-shadow( 0 10px 15px rgb(57,250,0));
+   padding: 10px;
+   overflow: hidden;
+}
+
+
+.example-enter {
+    opacity: 0;
+    transform:   translate(-250px,0);
+    transform: translate3d(-250px,0,0);
+}
+.example-enter.example-enter-active {
+	opacity: 1;
+	transition: opacity 1s ease;
+	transform:   translate(0,0);
+	transform: translate3d(0,0,0);
+	transition-property: transform, opacity;
+	transition-duration: 300ms;
+	transition-timing-function: cubic-bezier(0.175, 0.665, 0.320, 1), linear;
+}
+.example-leave {
+	opacity: 1;
+	transform:   translate(0,0,0);
+	transform: translate3d(0,0,0);
+        transition-property: transform, opacity;
+	transition-duration: 300ms;
+	transition-timing-function: cubic-bezier(0.175, 0.665, 0.320, 1), linear;
+}
+.example-leave.example-leave-active {
+	opacity: 0;
+	transform:   translate(250px,0);
+	transform: translate3d(250px,0,0);
+}
+
+
+.mouth-enter {
+    opacity: 0;
+    transform:   translate(250px, 0);
+    transform: translate3d(-200px, -150px, 10px) scale3d(0.1, 0.3, 0.1);
+}
+.mouth-enter.mouth-enter-active {
+	opacity: 1;
+	transition: opacity 1s ease;
+	transform:   translate(0,0);
+	transform: translate3d(0,0,0);
+	transition-property: transform, opacity;
+	transition-duration: 700ms;
+	transition-timing-function: cubic-bezier(0.175, 0.665, 1.320, 1), cubic;
+}
+.mouth-leave {
+	opacity: 1;
+	transform:   translate(0,0,0);
+	transform: translate3d(0,0,0);
+        transition-property: transform, opacity;
+	transition-duration: 700ms;
+	transition-timing-function: cubic-bezier(0.175, 0.665, 0.320, 1), cubic;
+}
+.mouth-leave.mouth-leave-active {
+	opacity: 0;
+	transform:   translate(250px,0);
+        transform: translate3d(-200px, -150px, 10px) scale3d(0.1, 0.3, 0.1);
+}
+
+
+#mouth-player-toggle {
+    transform: translateY(-10px);
+}
+
+#mouth-player-toggle img {
+    display: block;
+    max-width: 70px;
+    max-height:35px;
+    width: auto;
+    height: auto;
+}
+.mouth {
+    position: absolute;
+    width: 100%;
+}
+
+
+.main {
+    width: 100%;
+}
+
+ul {
+    list-style-type: none;
+}
+
+
+.album {
+    padding: 12px 13px 10px;
+}
+
+.album-info {
+    position: relative;
+    border: solid 1px;
+    
+}
+
+
+.mouth-player {
+    display: flex;
+}
+
+
+.mouth-background {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+
+.current-track-title {
+    transform: translate(70%, 1270%);
+    width: 50%;
+    position: absolute;
+    font-family: AlphaFridgeMagnets;
+    text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 2;
+}
+
+.current-track-artist {
+    transform: translate(65%, 1400%);
+    position: absolute;
+    width: 50%;
+    font-family: AlphaFridgeMagnets;
+    text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 2;
+
+
+}
+
+
+.album-art {
+    position: absolute;
+    transform: translate(60%, 140%);
+    width: 80%;
+    animation-name: current-track;
+    animation-duration: 4s;
+    z-index: 2
+}
+
+.album-art img {
+    width: 40%;
+    height: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.tracks {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    
+}
+
+.fridge-door {
+    position: relative;
+}
+
+.fridge-magnet {
+    position: absolute;
+    font-size: 90%;
+    
+}
+
+.header {
+    background: blue;
+    height: 50px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.app-container {
+    width: 90%;
+    max-width: 940px;
+
+
+}
+
+.left {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    height: 1000px;
+}
+
+.right {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 10%;
+    height: 1000px;
+    background: red;
+}
+
+.middle {
+    margin-top: 60px;
+    overflow: auto;
+}
+
+
+.release-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.release-display:hover {
+    transform: translateY(-3px);
+    -webkit-filter: drop-shadow(5px 5px 5px rgb(57,250,0));
+    filter: drop-shadow( 0 10px 15px rgb(57,250,0))
+}
+
+
+.fridge-background {
+    align-self: center;
+}
+
+.fridge-background img {
+    width: 300px;
+}
+
+.release-cover {
+    align-self: center;
+    position: absolute;
+    transform: translate(-65px, -180px);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.release-cover img {
+    width: 100px;
+    height: 100px;
+}
+
+.release-info {
+
+    transform: translate(60px, -400px);
+
+    font-family: AlphaFridgeMagnets;
+    font-weight: bold;
+    text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.release-tracks {
+    position: absolute;
+    transform: tanslateY(-400px);
+    font-family: AlphaFridgeMaAlphaFridgeMagnets/
+  
+    
+}
+
+.stove-button {
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+.stove-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.stove-button-text {
+    align-self: center;
+    position: absolute;
+    transform: translateY(-2px);
+    color: black;
+}
+
+.pan-background {
+    align-self: center;
+}
+
+.artist-name {
+    align-self: center;
+    position: absolute;
+    transform: translate(130px, -130px);
+    font-family: AlphaFridgeMagnets;
+    font-weight: bold;
+}
+
+
+.track-display {
+
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+
+.stove-background {
+    align-self: center;
+
+
+}
+
+.cover {
+    align-self: center;
+    position: absolute;
+    transform: translateY(-30px);
+
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.cover img {
+    width: 160px;
+    height: 160px;
+}
+
+.cover button {
+    background-color: Transparent;
+    border: none;
+}
+
+.track-info {
+
+    transform: translateY(-150px);
+
+    font-family: AlphaFridgeMagnets;
+    font-weight: bold;
+    text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.track-title {
+    white-space: nowrap;
+}
+
+.particles {
+    background-color: black;
+    bakcground-size: cover;
+    position:fixed;
+    height: 100%;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index: -1; 
+}
+#overlay {
+    position: relative;
+}
+
+/*  release form */
+.release-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.img-preview {
+    max-width: 50%;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    display: inline-block;
+}
+
+.inputfile:focus + label, .inputfile + label:hover {
+    background-color: red;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label * {
+	pointer-events: none;
+}
+
+.track-number {
+    height: 80%;
+    font-size: 110px;
+    display: inline-block;
+}
+
+.track-input {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.inputs {
+    display: flex;
+    width: 80%;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+
+.stove-container {
+    width: 400px;
+    position:relative;
+}
+
+#modal-form {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    z-index:10;
+}
+
+#modal-form input[type="text"], input[type="password"], input[type="file"]{
+    background: transparent;
+    border: none;
+}
+
+#username {
+    top: 40%;
+    left: 10%;
+    position: absolute;
+}
+
+
+#password {
+    top: 60%;
+    left: 10%;
+    position: absolute;
+}
+
+#upload {
+    top: 10%;
+    left: 14%;
+    position: absolute;
+}
+
+#artist {
+    top: 35%;
+    left: 10%;
+    position: absolute;
+}
+
+#album {
+    top: 50%;
+    left: 10%;
+    position: absolute;
+}
+
+#track {
+    top: 65%;
+    left: 10%;
+    position: absolute;
+}
+
+#file {
+    top: 70%;
+    left: 10%;
+    position: absolute;
+}
+
+
+#stove-buttons {
+    top: 85%;
+    left: 10%;
+    position: absolute;
+}
+
+#stove{
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    position:absolute;
+}
+
+.container-fluid {
+    width: 100%;
+    position: relative;
+}
+
+
+#app-background{
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    position:absolute;
+    z-index: -1;
+}
+
+
+#app-background img{
+    width: 100%;
+}
+
+#game-container{
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    position:absolute;
+    z-index: 0;
+}
+
+#app-front {
+    color: black;
+    
+}
+
+.track:hover {
+    background-color: yellow;
+}
+

@@ -1,0 +1,457 @@
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
+@import "bootstrap";
+//@import "alpha-fridge-magnets-cufonfonts-webfont/style.css";
+
+
+body {
+		margin: 0;
+		padding:0;
+    
+}
+.header {
+	width: 100%;
+	padding: 0px;
+}
+
+.header img {
+	border: none;
+	width: 100%;
+	height: 350px;
+}
+
+
+.background-image {
+		width: 100%;
+		padding: 0;
+		background-image:  url('images/glasgow-squinty.png');
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;              /* optional, center the image */
+}
+
+.bottom {
+		vertical-align: bottom;
+}
+
+.game-footer {
+		width: 100%;
+}
+
+
+#navbar{
+	overflow: hidden;
+	background-color: rgba(0, 0, 0, 0.8);
+	margin-top: 0px;
+	font-family: AlphaFridgeMagnets;
+}
+
+#navbar a{
+	float: left;
+	display: block;
+	color: rgb(57,250,0);
+	text-align: center;
+	padding: 15px 20px;
+	text-decoration: none;
+	font-size: 17px;
+}
+
+#navbar a:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+#mouth-player-toggle {
+		transform: translateY(-10px);
+}
+
+#mouth-player-toggle img {
+  display: block;
+  max-width: 70px;
+  max-height:35px;
+  width: auto;
+  height: auto;
+}
+
+#mouth {
+	max-width: 100%;
+}
+
+// upload music form
+#preview-image img {
+		//width: 160px;
+		//height: 160px;
+}
+
+
+
+.main {
+	
+	width: 100%;
+	
+}
+
+ul {
+	list-style-type: none;
+}
+
+
+.album {
+		padding: 12px 13px 10px;
+}
+
+.album-info {
+		position: relative;
+		border: solid 1px;
+		
+}
+
+
+.mouth-player {
+		display: flex;
+}
+
+
+.mouth-background {
+		position: relative;
+}
+
+@keyframes current-track-in {
+		0% {width: 0%;}
+		25% {width: 25%;}
+		50% {width: 50%;}
+		100% {width: 100%;}
+}
+
+.current-track-title {
+		transform: translate(50%, 570%) rotate(20deg);
+		position: absolute;
+		width: 50%;
+		font-family: poppins;
+		font-weight: bold;
+		text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		//animation-name: current-track-in;
+		//animation-duration: 4s;
+}
+
+.current-track-artist {
+		transform: translate(55%, 860%) rotate(-20deg);
+		position: absolute;
+		width: 50%;
+		font-family: poppins;
+		font-weight: bold;
+		text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		//animation-name: current-track-in;
+		//animation-duration: 4s;
+}
+
+
+.album-art {
+		position: absolute;
+		transform: translate(5%, 170%) rotate(10deg);
+		animation-name: current-track;
+		animation-duration: 4s;
+}
+
+.album-art img {
+		width: 40%;
+		height: auto;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.tracks {
+		position: absolute;
+		top: 40%;
+		left: 10%;
+	
+}
+
+.fridge-door {
+		position: relative;
+}
+
+.fridge-magnet {
+		position: absolute;
+		font-size: 90%;
+		
+}
+
+.header {
+    background: blue;
+    height: 50px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.app-container {
+    width: 90%;
+    max-width: 940px;
+    //position: relative;
+    //margin: 0 auto;
+}
+
+.left {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    height: 1000px;
+}
+
+.right {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 10%;
+    height: 1000px;
+    background: red;
+}
+
+.middle {
+    margin-top: 60px;
+		//display: flex;
+		//flex-direction: column;
+		//justify-content: center;
+		
+		//vertical-align: middle;
+}
+
+//release-display
+.release-display {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+}
+
+.fridge-background {
+		align-self: center;
+}
+
+.fridge-background img {
+		width: 300px;
+}
+
+.release-cover {
+		align-self: center;
+		position: absolute;
+		transform: translate(-65px, -180px);
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.release-cover img {
+		width: 100px;
+		height: 100px;
+}
+
+.release-info {
+		//align-self: center;
+		transform: translate(60px, -400px);
+		//transform: translateX(-30px);
+		font-family: poppins;
+		font-weight: bold;
+		text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.release-tracks {
+		position: absolute;
+		transform: tanslateY(-400px);
+		font-family: AlphaFridgeMagnets;
+		//font-weight: bold;
+		text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+//artist display
+.track-display {
+		//width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center; 
+}
+
+.pan-background {
+		align-self: center;
+}
+
+.artist-name {
+		align-self: center;
+		position: absolute;
+		transform: translate(130px, -130px);
+		font-family: poppins;
+		font-weight: bold;
+}
+
+// track-display
+.track-display {
+		//width: 100%;
+		white-space: nowrap;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center; 
+}
+
+.stove-background {
+		align-self: center;
+		//top: 0; left: 50%;
+		//transform: translate(-50%,-0%);
+}
+
+.stove-background img {
+		//max-width: 110%;
+}
+.cover {
+		align-self: center;
+		position: absolute;
+		transform: translateY(-30px);
+		//top: 150px;
+		//left: 1px;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.cover img {
+		width: 160px;
+		height: 160px;
+}
+
+.cover button {
+		background-color: Transparent;
+		border: none;
+}
+
+.track-info {
+		//align-self: center;
+		transform: translateY(-150px);
+		//transform: translateX(-30px);
+		font-family: poppins;
+		font-weight: bold;
+		text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.track-title {
+		white-space: nowrap;
+}
+
+//space backgroun
+#particle {
+  background-color: black;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:0; 
+}
+#overlay {
+  position: relative;
+}
+
+// login form
+.ember-modal-dialog {
+		background-color: rgba(255, 0, 255, 0);
+		box-shadow: none;
+}
+
+.stove-container {
+		width: 400px;
+		position:relative;
+}
+
+#modal-form {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  z-index:10;
+}
+
+#modal-form input[type="text"], input[type="password"], input[type="file"]{
+		background: transparent;
+		border: none;
+}
+
+#username {
+		top: 40%;
+		left: 10%;
+		position: absolute;
+}
+
+
+#password {
+		top: 60%;
+		left: 10%;
+		position: absolute;
+}
+
+#upload {
+		top: 10%;
+		left: 14%;
+		position: absolute;
+}
+
+#artist {
+		top: 35%;
+		left: 10%;
+		position: absolute;
+}
+
+#album {
+		top: 50%;
+		left: 10%;
+		position: absolute;
+}
+
+#track {
+		top: 65%;
+		left: 10%;
+		position: absolute;
+}
+
+#file {
+		top: 70%;
+		left: 10%;
+		position: absolute;
+}
+
+
+#stove-buttons {
+		top: 85%;
+		left: 10%;
+		position: absolute;
+}
+
+#stove{
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+		position:absolute;
+}
+
+.container-fluid {
+		width: 100%;
+		position: relative;
+}
+
+
+#app-background{
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+		position:absolute;
+}
+
+#app-background img{
+		width: 100%;
+}
+
+#app-front {
+		color: black;
+}
+
+.track:hover {
+	background-color: yellow;
+}
