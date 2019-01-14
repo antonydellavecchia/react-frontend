@@ -1,0 +1,152 @@
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import imageMapResize from 'image-map-resizer';
+import { connect } from 'react-redux';
+
+import { audioPlayerActions } from '../../actions/audioPlayer.actions';
+import { getTrackState } from '../../helpers/selectors';
+
+import pausedHoverPlay from './images/mouth16.png';
+import pausedHoverNext from './images/mouth17.png';
+import pausedHoverPrev from './images/mouth19.png';
+import playingHoverPlay from './images/mouth15.png';
+import playingHoverNext from './images/mouth18.png';
+import playingHoverPrev from './images/mouth20.png';
+import pausedMouth from './images/mouth1.png';
+import playingMouth from './images/mouth14.png';
+
+const mapDispatchToProps = dispatch => {
+  return {
+    playAnimation: () => dispatch(audioPlayerActions.playAnimation()),
+    pauseTrack: () => dispatch(audioPlayerActions.pauseTrack()),
+    nextTrack: (queue) => dispatch(audioPlayerActions.nextTrack(queue)),
+    prevTrack: (queue) => dispatch(audioPlayerActions.prevTrack(queue)),
+    setActiveTrack: (track) => dispatch(audioPlayerActions.setActiveTrack(track))
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    audioTrack: getTrackState(state),
+    isPlaying: state.audioPlayer.isPlaying,
+    controllerView: state.audioPlayer.controllerView,
+    queue: state.audioPlayer.queue
+  };
+};
+
+class MouthController extends Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      mouthImage: props.isPlaying ? playingMouth : pausedMouth
+    }
+  }
+
+  componentDidMount() {
+    imageMapResize();
+  }
+
+  hover(area) {
+    if (area == 'play') {
+      let image = this.props.isPlaying ? playingHoverPlay : pausedHoverPlay;
+
+      this.setState({
+        mouthImage: image
+      });
+    }
+
+    if (area == 'next') {
+       let image = this.props.isPlaying ? playingHoverNext : pausedHoverNext;
+
+      this.setState({
+        mouthImage: image
+      });
+    }
+
+    if (area == 'previous') {
+      let image = this.props.isPlaying ? playingHoverPrev : pausedHoverPrev;
+
+      this.setState({
+        mouthImage: image
+      });
+    }
+  }
+
+  hoverOff() {
+    let image = this.props.isPlaying ? playingMouth : pausedMouth;
+
+    this.setState({
+      mouthImage: image
+    });
+  }
+
+  play() {
+    this.props.playAnimation();
+  }
+
+  next() {
+    if (this.props.isPlaying) {
+      this.props.playAnimation();
+      this.props.audioTrack.pause();
+      setTimeout(() => {
+
+        this.props.nextTrack(this.props.queue);
+        
+        setTimeout(() => {
+          this.play();
+        }, 1000);
+      }, 1000);
+    }
+  }
+
+  prev() {
+    if (this.props.isPlaying) {
+      this.props.playAnimation();
+      this.props.audioTrack.pause();
+      setTimeout(() => {
+
+        this.props.prevTrack(this.props.queue);
+        
+        setTimeout(() => {
+          this.play();
+        }, 1000);
+      }, 1000);
+    }
+  }
+  
+
+  render() {
+    return(
+      <div className="mouth-background">
+        <img className="mouth" src={ this.state.mouthImage } useMap="#controls"/>
+        <map name="controls">
+	  <area shape="poly"
+	        coords="246,89,226,135,224,174,264,188,404,196,419,165,421,123,396,87,325,117,326,115,326,116,250,92,248,88,248,91"
+                onMouseEnter={ () => this.hover('play') }
+                onMouseLeave={ () => this.hoverOff() }
+                onClick={ () => this.play() }
+          />
+	  
+	  <area shape="poly"
+	        coords="241,86,220,136,225,174,186,185,139,166,145,125,170,93,181,92"
+                onMouseEnter={ () => this.hover('previous') }
+                onMouseLeave={ () => this.hoverOff() }
+                onClick={ () => this.prev() }
+
+          />
+          
+	  <area shape="poly"
+	        coords="400,87,409,82,479,103,499,145,493,188,435,198,426,193,429,148,420,120"
+                onMouseEnter={ () => this.hover('next') }
+                onMouseLeave={ () => this.hoverOff() }
+                onClick={ () => this.next() }
+          />
+        </map>
+      </div>
+    );
+  }
+}
+
+const connectedMouthController = connect(mapStateToProps, mapDispatchToProps)(MouthController);
+export { connectedMouthController as MouthController };

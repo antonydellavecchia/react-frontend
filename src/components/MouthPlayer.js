@@ -117,8 +117,6 @@ export class MouthPlayer extends Component {
       mouthImage: `assets/images/mouth${endFrame}.png`,
       playing: !this.state.playing
     });
-    this.render();
-    this.componentDidMount();
   }
 
   // returns controls when mouth isnt being animated

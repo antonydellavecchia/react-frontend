@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cropper } from 'react-image-cropper';
+//import { Cropper } from 'react-image-cropper';
 import { Grid, Row, Col} from 'react-bootstrap';
 
 import { userService } from '../services';
@@ -103,58 +103,59 @@ export class ReleaseUpload extends React.Component {
     this.setState({tracks: tracks});
   }
 
-  imageUpload(value) {
-    let input = value.target;
-    
-    // load image input
-    if (input.files && input.files[0]) {
-      let reader = new FileReader();
-
-      reader.onload = (e) => {
-        console.log(e.target.result);
-        // imagePreview div
-        let imagePreview = (
-          <div className="img-preview">
-            <Cropper
-              src={ e.target.result }
-              ref={ref => { this.cropper = ref }} />
-          </div>
-        );
-
-        // set cropper and remoce previous cover
-        this.setState({imagePreview: imagePreview, cover: null});
-      }
-
-      reader.readAsDataURL(input.files[0]);
-    }
-
-  }
-
-  cropImage(e) {
-    // stop from submitting form
-    e.preventDefault();
-    
-    if (!this.state.imagePreview) {
-      return;
-    }
-
-    let coverData = this.cropper.crop();
-    let coverPreview =  (
-      <div className="stove-display">
-        <div className="stove-background">
-          <img src="assets/images/stove.png"/>
-        </div>
-
-	<div className="cover">
-          <img src={coverData}/>
-        </div>
-      </div>
-    );
-
-    this.setState({coverPreview: coverPreview, coverData: coverData});
-  }
-
-
+//  imageUpload(value) {
+//    let input = value.target;
+//    
+//    // load image input
+//    if (input.files && input.files[0]) {
+//      let reader = new FileReader();
+//
+//      reader.onload = (e) => {
+//        console.log(e.target.result);
+//        // imagePreview div
+//        
+//        let imagePreview = (
+//          <div className="img-preview">
+//            <Cropper
+//              src={ e.target.result }
+//              ref={ref => { this.cropper = ref }} />
+//          </div>
+//        );
+//
+//        // set cropper and remoce previous cover
+//        this.setState({imagePreview: imagePreview, cover: null});
+//      }
+//
+//      reader.readAsDataURL(input.files[0]);
+//    }
+//
+//  }
+//
+//  cropImage(e) {
+//    // stop from submitting form
+//    e.preventDefault();
+//    
+//    if (!this.state.imagePreview) {
+//      return;
+//    }
+//
+//    let coverData = this.cropper.crop();
+//    let coverPreview =  (
+//      <div className="stove-display">
+//        <div className="stove-background">
+//          <img src="assets/images/stove.png"/>
+//        </div>
+//
+//	<div className="cover">
+//          <img src={coverData}/>
+//        </div>
+//      </div>
+//    );
+//
+//    this.setState({coverPreview: coverPreview, coverData: coverData});
+//  }
+//
+//
   
   render() {
     return(

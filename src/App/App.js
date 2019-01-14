@@ -7,7 +7,9 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { history } from '../helpers';
 import { alertActions } from '../actions';
 import { PrivateRoute, Navigation, SpaceBackground } from '../components';
-import AudioPlayer from '../components/AudioPlayer';
+import {AudioPlayer} from '../components/AudioPlayer';
+import { ThreeScene } from '../components/ThreeContainer';
+import {Game} from '../components/Game';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { Login,
@@ -27,14 +29,13 @@ class App extends React.Component {
 
     const { dispatch } = this.props;
     history.listen((location, action) => {
+      console.log(location, action);
       // clear alert on location change
       dispatch(alertActions.clear());
     });
   }
 
   navbarLinks() {
-    //alert(this.prop.authenticated);
-    
     if (localStorage.getItem('user')) {
       return [
         <li key="discover"> <Link  to="/discover">Discover</Link></li>,
@@ -55,36 +56,33 @@ class App extends React.Component {
     return (
       <div>
         <SpaceBackground />
+        <Game/>
         <Router history={history}>
           <div>
             <Navigation>
               { this.navbarLinks() }
             </Navigation>
 
-
             <Grid fluid>
               <Row>
                 <Col sm={3} xs={11} >
                 </Col>
+
                 <Col sm={6} xs={11} >
                   <div className="middle">
-                    <Route path="/login" component={LoginPage}/>
-                    <PrivateRoute path='/discover' component={Discover} />
-
-                    <PrivateRoute exact path='/tracks' component={ Tracks }/>
+                    <Route path="/login" component={ LoginPage }/>
                     <Route path='/tracks/:id' component={ TrackContent }/>
-
-                    <PrivateRoute path='/releases' component={ Releases }/>
-
-                    <PrivateRoute exact path='/artists' component={ Artists }/>
                     <Route path='/artists/:id' component={ ArtistContent}/>
 
+                    <PrivateRoute path='/discover' component={ Discover }/>
+                    <PrivateRoute exact path='/tracks' component={ Tracks }/>
+                    <PrivateRoute path='/releases' component={ Releases }/>
+                    <PrivateRoute exact path='/artists' component={ Artists }/>
                     <PrivateRoute path='/submit' component={ Submit }/>
                   </div>
-
                 </Col>
+
                 <Col sm={3}>
-                  
                 </Col>
               </Row>
             </Grid>
@@ -94,7 +92,6 @@ class App extends React.Component {
                 <Col sm={3} xs={11} className="left">
                   <AudioPlayer />
                 </Col>
-
               </Row>
             </Grid>
           </div>

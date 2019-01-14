@@ -5,8 +5,7 @@ import { history } from '../helpers';
 
 export const userActions = {
   login,
-  logout,
-  tracks
+  logout
 };
 
 function login(username, password) {
@@ -37,7 +36,4 @@ function logout() {
   return { type: userConstants.LOGOUT };
 }
 
-function tracks() {
-  return userService.tracks();
-}
 

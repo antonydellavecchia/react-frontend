@@ -12,36 +12,40 @@ class ContentListContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    
-    this.state = {
-      items: props.items,
-      url: props.url
-    };
-
     this.removeItems.bind(this);
+    this.state = {
+      items: props.items
+    }
   }
   
   render() {
-    let Component = this.state.component;
     return (
-
       <div className="content-list-container">
-	<div className="animation-container">
+        <div className="animation-container">
 	  <ReactCSSTransitionGroup transitionName="example"
                                    transitionLeaveTimeout={500}
                                    transitionEnterTimeout={500}>
-
-	      { this.state.content }
+            
+	    { this.content() }
 	  </ReactCSSTransitionGroup>
-	</div>
+        </div>
       </div>
     );
   }
 
-  componentDidMount(){
-    this.setItems();
+
+  
+  componentDidMount() {
+    if (!this.state.content) {
+      let content = this.content();
+      
+      this.setState({content: content});
+    }
   }
 
+  componentDidUpdate(){
+    console.log(this.state.items);
+  }
 
   transitionToRoute(url) {
     this.props.setTimeout(() => {
@@ -49,22 +53,22 @@ class ContentListContainer extends React.Component {
     }, 500);
   }
   
-  setItems() {
-    let content = this.state.items.map((item, i)=> {
+  content() {
+    return  this.props.items.map((item, i)=> {
       return(
-	<div key={i} onClick={() => this.removeItems(item) }  className="item">
+	<div key={i}>
 	  { item.div }
         </div>
-      );	
+      );
     });
 
-    this.setState({content: content});
+   
   }
   
   removeItems(item) {
     if (item.url) {
-      this.transitionToRoute(item.url);
-    
+      //this.transitionToRoute(item.url);
+      
       this.setState({
         content: null,
         items: this.state.items

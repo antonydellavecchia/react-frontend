@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { userService } from '../services';
 
 import { userActions } from '../actions';
-import { ReleaseUpload } from '../components';
+//import { ReleaseUpload } from '../components';
 
 
 class Submit extends React.Component {
@@ -25,7 +25,7 @@ class Submit extends React.Component {
   render() {
     return (
       <div className="general-text">
-        <ReleaseUpload />
+
       </div>
     );
   }

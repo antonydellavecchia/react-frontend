@@ -1,60 +1,113 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import { userService } from '../services';
+import { userActions, audioPlayerActions } from '../actions';
+import { TrackDisplay, ContentListContainer } from '../components';
 
-import { userActions } from '../actions';
-import { TrackDisplay } from '../components';
+const mapDispatchToProps = dispatch => {
+  return {
+    setQueue: (endpoint) => dispatch(audioPlayerActions.setQueue(endpoint)),
+    pauseTrack: () => dispatch(audioPlayerActions.pauseTrack())
+  };
+};
 
+const mapStateToProps = state => {
+  return {
+    queue: state.audioPlayer.queue
+  };
+};
 
 class Discover extends React.Component {
   constructor(props) {
     super(props);
 
+    // set initial queue
+    this.props.setQueue('/tracks');
+
     this.state = {
-      tracks: []
-    };
-    
-    
+      content: null,
+      refs: null
+    }
   }
 
   componentDidMount() {
-    const requestOptions = {
-      method: 'GET'
-    };
+    // create content
+    console.log(this.props.queue, 'hello');
+  }
 
-    fetch('https://127.0.0.1:5000/tracks', requestOptions)
-      .then(result => {
-        return result.json();
-      }).then(data =>{
-        let tracks = data.tracks.map((track) => {
-          console.log(track);
-          return <TrackDisplay track={ track } />;
-        });
+  componentDidUpdate() {
+    console.log(this.props.queue);
 
-        this.setState({tracks: tracks});
+    if (!this.state.refs) {
+      let refs = this.props.queue.list.map((item) => {
+        return React.createRef();
       });
 
+      this.setState({refs: refs});
+    }
 
+    else {
+      this.scrollToItem();
+    }
   }
+
+  scrollToItem () {
+    let item = this.state.refs[this.props.queue.index];
+    //console.log(this.state.refs, this.props.queue.index);
+
+    if (item.current) {
+      window.scrollTo({
+        top: item.current.offsetTop - 50, 
+        behavior: "smooth"
+      });
+    }
+  }
+
+  content () {
+    let queue = this.props.queue;
+    let content = null;
+    
+    if (queue && this.state.refs) {
+      let items = queue.list.map((track, index) => {
+        let className = (index == queue.index) ? 'active-item' : 'item';
+        
+        let div =  (
+          <div ref={ this.state.refs[index]  } className={className}>
+            <TrackDisplay track={track}/>
+          </div>
+        );
+
+        return { div: div };
+      });
+
+      return <ContentListContainer items={ items }/>;
+    }
+  }
+  
 
   render() {
     return (
-      <div>
-        { this.state.tracks }
+      <div className="content-list-container">
+        <div className="animation-container">
+	  <ReactCSSTransitionGroup transitionName="example"
+                                   transitionLeaveTimeout={500}
+                                   transitionEnterTimeout={500}>
+            
+	    { this.content() }
+	  </ReactCSSTransitionGroup>
+        </div>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  const { users, authentication } = state;
-  const { user } = authentication;
-  return {
-    user,
-    users
-  };
-}
+const connectedDiscover = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  { withRef: true}
+)(Discover);
 
-const connectedDiscover = connect(mapStateToProps)(Discover);
 export { connectedDiscover as Discover };

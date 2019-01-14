@@ -1,0 +1,79 @@
+import Phaser from 'phaser';
+
+class TrackScene extends Phaser.Scene {
+  constructor(){
+    super({
+      key: 'TrackScene'
+    });
+  }
+
+  preload () {
+    this.load.image('spaceTiles', 'assets/images/space_tiles.png');
+    this.load.tilemapTiledJSON('spacekitchen','assets/tilemaps/spacekitchen.json');
+    
+    this.load.spritesheet('eldridge', 'assets/images/eldridge_spritesheet.png', {
+      frameWidth: 100,
+      frameHeight: 150,
+      startFrame: 2,
+      endFrame: 4
+    });
+  }
+
+  create() {
+    console.log('the space kitchen');
+    //this.cameras.main.setBounds(0, 0, 1000000, 1000000);
+    //this.physics.world.setBounds(0, 0, 1000000, 1000000);
+
+    const map = this.make.tilemap({key:'spacekitchen'});
+    const tileset = map.addTilesetImage('Space Kitchen', 'spaceTiles');
+
+    console.log(tileset);
+    this.backgroundLayer = map.createStaticLayer('background', tileset, 0, 0);
+    let blockedLayer = map.createStaticLayer(0, tileset, 0, 0);
+
+    // create objects behind player
+    let layer = this.physics.add.group();
+    layer.enableBody = true;	
+    
+    let objArr = findObjectsByType('inspectable', 'backObjects', map);
+    objArr.forEach((element) => this.physics.add.tileSprite(element, layer));
+
+    this.backObjects = layer;
+
+    // Creat player
+    let x = 1000000 / 2;
+    let y = 1000000 / 2;
+    this.player = this.physics.add.sprite(x, y, 'eldridge');
+    this.cameras.main.startFollow(this.player, true, 0.008, 0.02);
+    
+    // Set tiles for collisions
+    //map.setCollisionByExclusion([0], true, blockedLayer);
+    
+  }
+
+  update() {
+
+  }
+}
+
+
+function findObjectsByType(type, layerName, map) {
+  console.log(map);
+  // Returns array of objects of given type from layer
+  let objArr = [];
+
+  map.objects.forEach(function(element) {
+    if( element.type === type) {
+      //Phaser uses top left, Tiled bottom left so we have to adjust
+      //also keep in mind that some images could be of different size as the tile size
+      //so they might not be placed in the exact position as in Tiled
+
+      element.y -= map.tileHeight;
+      objArr.push(element);
+    }
+  });
+
+  return objArr;
+}
+
+export default TrackScene;

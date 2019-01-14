@@ -6,3 +6,4 @@ export * from './ReleaseDisplay';
 export * from './ReleaseUpload';
 export * from './ArtistDisplay';
 export * from './ContentListContainer';
+export * from './ThreeContainer';

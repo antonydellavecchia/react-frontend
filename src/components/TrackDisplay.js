@@ -9,7 +9,7 @@ const apiUrl = process.env.NODE_ENV === 'production' ?
 const mapDispatchToProps = dispatch => {
   return {
     setActiveTrack: track => dispatch(audioPlayerActions.setActiveTrack(track)),
-    playTrack: () => dispatch(audioPlayerActions.playTrack())
+    playAnimation: () => dispatch(audioPlayerActions.playAnimation())
   };
 };
 
@@ -31,7 +31,7 @@ class ConnectedTrackDisplay extends React.Component {
   handleClick(event) {
     const track = this.state.track;
 
-    this.props.playTrack();
+    this.props.playAnimation();
     this.props.setActiveTrack(track);
   }
 
