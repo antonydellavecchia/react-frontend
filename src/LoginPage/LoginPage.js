@@ -45,8 +45,8 @@ class LoginPage extends React.Component {
     return (
       <div className="col-md-6 col-md-offset-3 general-text">
         <div className="alert alert-info">
-          Username: test<br />
-          Password: test
+          Username: preview<br />
+          Password: password
         </div>
         <h2>Login</h2>
         <form name="form" onSubmit={this.handleSubmit}>
