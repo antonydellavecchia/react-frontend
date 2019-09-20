@@ -96,7 +96,7 @@ class TrackScene extends Phaser.Scene {
     }
 
     if (this.cursors.up.isDown && this.player.body.onFloor()){
-      this.player.setVelocityY(-500);
+      this.player.setVelocityY(-1500);
     }
   }
 }

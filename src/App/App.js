@@ -21,8 +21,6 @@ import { Login,
          TrackContent,
          ArtistContent} from '../routes';
 
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -32,6 +30,7 @@ class App extends React.Component {
       console.log(location, action);
       // clear alert on location change
       dispatch(alertActions.clear());
+      console.log('hey there');
     });
   }
 

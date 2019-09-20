@@ -1,7 +1,25 @@
 import React from 'react';
 import * as THREE from 'three';
+import { connect } from 'react-redux';
+import { getTrackState } from '../helpers/selectors';
+import { audioPlayerActions } from '../actions/audioPlayer.actions';
 
-export class ThreeScene extends React.Component{
+const mapStateToProps = state => {
+  return {
+    audioTrack: getTrackState(state),
+    isPlaying: state.audioPlayer.isPlaying,
+    controllerView: state.audioPlayer.controllerView,
+    queue: state.audioPlayer.queue
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setActiveTrack: track => dispatch(audioPlayerActions.setActiveTrack(track)),
+  };
+};
+
+class ThreeScene extends React.Component{
   componentDidMount(){
     const width = this.mount.clientWidth
     const height = this.mount.clientHeight
@@ -15,6 +33,12 @@ export class ThreeScene extends React.Component{
       1000
     )
     this.camera.position.z = 4
+
+    // add listener
+    this.listener = new THREE.AudioListener();
+    this.audio = new THREE.Audio(this.listener);
+    this.audio.crossOrigin = "anonymous";
+    
     //ADD RENDERER
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
     this.renderer.setClearColor('#000000')
@@ -22,10 +46,19 @@ export class ThreeScene extends React.Component{
     this.mount.appendChild(this.renderer.domElement)
     //ADD CUBE
     const geometry = new THREE.SphereGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: '#433F81'     })
+    const material = new THREE.MeshBasicMaterial({ color: 'rgb(57,250,0)'     })
     this.cube = new THREE.Mesh(geometry, material)
     this.scene.add(this.cube)
     this.start()
+  }
+
+  componentDidUpdate() {
+    // update three audio listener
+    this.props.audioTrack.oncanplaythrough = function() {
+      console.log(this.props.audioTrack);
+      this.audio.setMediaElementSource(this.props.audioTrack);
+    }.bind(this)
+
   }
   
   componentWillUnmount(){
@@ -60,4 +93,6 @@ export class ThreeScene extends React.Component{
   }
 }
 
+const connectedThreeScene = connect(mapStateToProps, mapDispatchToProps)(ThreeScene)
 
+export { connectedThreeScene as ThreeScene }
