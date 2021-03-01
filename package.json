@@ -29,7 +29,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "three": "^0.99.0"
+    "three": "^0.125.0"
   },
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
